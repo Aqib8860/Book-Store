@@ -1,0 +1,32 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" >
+  <a class="navbar-brand" href="#">Book Store</a>
+  <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+        
+        
+        {% if request.user.is_authenticated %}
+
+          {% if request.user.is_customer %}
+          <a class="nav-item nav-link active" href="{% url 'book:user-dashboard' %}">Home</a>
+              <a class="btn btn-outline-warning" href="{% url 'book:my-orders' %}">My Orders</a>&nbsp;
+          {% elif request.user.is_seller %}
+            <a class="nav-item nav-link active" href="{% url 'book:seller-dashboard' %}">Home</a>
+              <a class="btn btn-outline-warning" href="{% url 'book:add-book' %}">Add Book</a>&nbsp;
+          {% endif %}
+
+
+        <a class="btn btn-outline-warning" href="{% url 'core:user-logout' %}">Logout</a>&nbsp;
+        {% else %}
+        <a class="nav-item nav-link active" href="{% url 'core:home' %}">Home</a>
+        <a class="btn btn-outline-warning" href="{% url 'core:user-login' %}">Login</a>&nbsp;&nbsp;
+        <a class="btn btn-outline-primary" href="{% url 'core:user-register' %}">Register</a>&nbsp;
+        {% endif %}
+
+    </div>
+  </div>
+</nav>

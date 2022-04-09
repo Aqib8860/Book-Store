@@ -1,0 +1,84 @@
+{% extends 'core/main.html' %}
+{% block title %}{{ request.user }}{% endblock %}
+
+{% block content %}
+<h1 style="text-align:right">Hello {{ request.user }}</h1>
+<br>
+
+<br>
+
+{% if messages %}
+    <div class="alert alert-danger">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+<br>
+
+<div class="card-deck">
+    {% for book in books %}
+    <div class="card">
+        <!img class="card-img-top" src="..." alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{ book.name }}</h5>
+            <p class="card-text">Author : {{ book.author }}</p><br>
+            <p class="card-text">Category : {{ book.category }}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Rs {{ book.price }}</small>
+            <a class="btn btn-info btn-sm" href="{% url 'book:user-order' book.id%}">Buy Now</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<br><br>
+
+ <div class="row">
+        <div class="col-md-7">
+            <h5>LAST 5 ORDERS</h5>
+            <hr>
+            <div class="card card-body">
+
+                <table class="table table-sm">
+                    <tr>
+                        <th>Order Id</th>
+                        <th>Book Name</th>
+                        <th>Price</th>
+                        <th>Oder Date</th>
+                        <th>Deliver</th>
+                        
+                    </tr>
+
+
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.book.name }}</td>
+                            <td>Rs {{ order.book.price }}</td>
+                            <td>{{ order.order_date }}</td>
+                            {% if order.deliver == False %}
+                                <td>
+                                    <a class="btn btn-danger" href="" disable>Not Delivered</a>
+                                </td>
+                            {% else %}
+                                <td>
+                                      <a class="btn btn-success" href="">Delivered</a>
+                                </td>
+                            {% endif %}
+
+                            
+                        </tr>
+                    {% endfor %}
+                </table>
+            <a class="btn btn-primary" href="{% url 'book:my-orders' %}">View All</a>
+
+            </div>
+        </div>
+    </div>
+    
+<br><br><br>
+
+{% endblock %}

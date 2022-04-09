@@ -1,0 +1,49 @@
+{% extends 'core/main.html' %}
+{% block title %}{{ request.user }}{% endblock %}
+
+{% block content %}
+
+<br><br>
+<div class="row">
+        <div class="col-md">
+            <div class="card card-body">
+                <h5 style="text-align:center;">My Orders</h5>
+            </div>
+            <div class="card card-body">
+                <table class="table">
+                    <tr>
+                        <th>Order Id</th>
+                        <th>Book Name</th>
+                        <th>Price</th>
+                        <th>Oder Date</th>
+                        <th>Deliver</th>
+                        
+                    </tr>
+
+
+                    {% for order in orders %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.book.name }}</td>
+                            <td>Rs {{ order.book.price }}</td>
+                            <td>{{ order.order_date }}</td>
+                            {% if order.deliver == False %}
+                                <td>
+                                    <a class="btn btn-danger" href="" disable>Not Delivered</a>
+                                </td>
+                            {% else %}
+                                <td>
+                                      <a class="btn btn-success" href="">Delivered</a>
+                                </td>
+                            {% endif %}
+
+                            
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+<br><br>
+{% endblock %}

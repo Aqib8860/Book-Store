@@ -1,0 +1,20 @@
+{% extends 'core/main.html' %}
+{% block title %}{{ request.user }}{% endblock %}
+
+{% block content %}
+
+<br><br>
+<center>
+    <h2>Order Confirmation</h2>
+    Name : {{ book.name }}<br>
+    Category : {{ book.category }}<br>
+    Price : {{ book.price }}<br><br>
+    <a class="btn btn-danger" href="{% url 'book:user-dashboard' %}">Cancel</a>
+    <form action="{% url 'book:user-order' book.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-block btn-primary", value="Order Now">
+    </form>
+    
+</center>
+<br><br>
+{% endblock %}
