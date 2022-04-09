@@ -3,7 +3,7 @@
 # How to Run
 
 -- Clone The Repo
--- go to the directory
+-- go to the project directory
 -- pip install -r requirements.txt
 -- python manage.py makemigrations
 -- python manage.py migrate
