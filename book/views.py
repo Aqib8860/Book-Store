@@ -2,13 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import CreateView, TemplateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import *
+
 
 
 # Create your views here.
 
 
-class SellerDashboardView(TemplateView):
+class SellerDashboardView(TemplateView, LoginRequiredMixin):
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
     template_name = 'book/dashboard.html'
 
     def get_context_data(self, **kwargs):
@@ -21,8 +25,10 @@ class SellerDashboardView(TemplateView):
 
 
 
-class UserDashboardView(TemplateView):
+class UserDashboardView(TemplateView, LoginRequiredMixin):
     template_name = 'book/user_dashboard.html'
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
 
     def get_context_data(self, **kwargs):
         books = Book.objects.all().order_by('date')[0:10]
@@ -32,7 +38,9 @@ class UserDashboardView(TemplateView):
 
         
 
-class AddBookView(TemplateView):
+class AddBookView(TemplateView, LoginRequiredMixin):
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
     form_class = AddBookForm
     initial = {'key': 'value'}
     template_name = 'book/add_book.html'
@@ -54,7 +62,9 @@ class AddBookView(TemplateView):
         return render(request, self.template_name, {'form': form})
 
 
-class UpdateBookView(TemplateView):
+class UpdateBookView(TemplateView, LoginRequiredMixin):
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
     #form_class = AddBookForm
     #initial = {'key': 'value'}
     template_name = 'book/update_book.html'
@@ -86,7 +96,9 @@ class UpdateBookView(TemplateView):
         return redirect('book:seller-dashboard')
 
 
-class DeleteBookView(TemplateView):
+class DeleteBookView(TemplateView, LoginRequiredMixin):
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
     template_name = 'book/seller-dashboard.html'
 
     def get(self, request, book_id):
@@ -95,7 +107,9 @@ class DeleteBookView(TemplateView):
         return redirect('book:seller-dashboard')
 
 
-class UserOrderView(TemplateView):
+class UserOrderView(TemplateView, LoginRequiredMixin):
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
     template_name = 'book/order.html'
 
     def get(self, request, book_id):
@@ -109,10 +123,13 @@ class UserOrderView(TemplateView):
         return redirect('book:user-dashboard')
 
 
-class MyOrdersView(TemplateView):
+class MyOrdersView(TemplateView, LoginRequiredMixin):
+    login_url = 'core:user-login'
+    redirect_field_name = 'core:user-login'
     template_name = 'book/myorders.html'
 
     def get_context_data(self, **kwargs):
         orders = Order.objects.filter(user=self.request.user).order_by('order_date')
         context = {'orders': orders }
         return context
+
