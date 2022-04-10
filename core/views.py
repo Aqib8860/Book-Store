@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import CreateView, TemplateView
+from django.utils.decorators import method_decorator
+from .decorators import *
 from .forms import *
 
 
@@ -13,6 +15,7 @@ class UserRegistrationView(CreateView):
     initial = {'key': 'value'}
     template_name = 'core/user_register.html'
 
+    @method_decorator(unauthenticated_user)
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
@@ -38,6 +41,7 @@ class LoginView(TemplateView):
     initial = {'key': 'value'}
     template_name = 'core/login.html'
 
+    @method_decorator(unauthenticated_user)
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
         return render(request, self.template_name, {'form': form})
